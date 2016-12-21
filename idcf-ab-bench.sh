@@ -68,8 +68,9 @@ do
         --privateport 22 \
         --publicport ${port} \
         --virtualmachineid ${vmid} >/dev/null
-    sleep 30
 done
+
+sleep 40
 
 #for i in `seq 1 ${count}`
 #do
@@ -80,7 +81,7 @@ done
 for i in `seq 1 ${count}`
 do
     #echo "ab -n ${request_number} -c ${client_number} '${target_url}' && exit" | ssh -oStrictHostKeyChecking=no -i ${HOME}/.ssh/${keypair} root@${ipaddress} > ${work_dir}/vm-${i}.log 2>/dev/null &
-    echo "ab -n ${request_number} -c ${client_number} '${target_url}' && exit" | ssh -oStrictHostKeyChecking=no -p ${ports[${i}]} -i ${HOME}/.ssh/${keypair} root@${ipaddress} > ${work_dir}/ab-${i}.log 2>/dev/null &
+    echo "ab -s 60 -r -n ${request_number} -c ${client_number} '${target_url}' && exit" | ssh -oStrictHostKeyChecking=no -p ${ports[${i}]} -i ${HOME}/.ssh/${keypair} root@${ipaddress} > ${work_dir}/ab-${i}.log 2>${work_dir}/error-${i}.log &
 done
 
 
